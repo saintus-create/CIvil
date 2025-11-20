@@ -4,6 +4,7 @@ import { Logo } from "@/components/Logo";
 import Link from "next/link";
 import { useUser } from "@/components/UserProvider";
 import { signout } from "@/tools/account";
+import clsx from "clsx";
 
 type NavbarProps = {
   selectedRoute?: string;
@@ -12,44 +13,52 @@ type NavbarProps = {
 export const Navbar = ({ selectedRoute }: NavbarProps) => {
   const { user, loading, clearUser } = useUser();
 
+  const handleSignout = async (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    await signout();
+    clearUser();
+  };
+
   return (
     <nav
-      className={
-        "sticky top-7 z-10 flex w-[90%] flex-row items-center justify-between rounded-2xl border border-neutral-800 bg-neutral-900-80 p-4 backdrop-blur-xl md:w-[51rem]"
-      }
+      className={clsx(
+        "sticky top-7 z-10 flex w-[90%] flex-row items-center justify-between",
+        "rounded-2xl border border-black bg-black/80 p-4 backdrop-blur-xl",
+        "md:w-[51rem]"
+      )}
+      aria-label="Main navigation"
     >
-      <Link href={"/"}>
+      <Link href="/" aria-label="Home">
         <Logo />
       </Link>
-      <div className={"flex gap-4 text-white sm:gap-10"}>
-        <span
-          className={
-            selectedRoute === "rules" ? "font-semibold" : "font-normal"
-          }
-        >
-          <Link href={"/rules"}>Rules</Link>
-        </span>
+      <ul className="flex gap-4 text-white sm:gap-10">
+        <li>
+          <Link
+            href="/rules"
+            className={clsx(
+              "transition-colors duration-200 hover:text-neutral-300",
+              selectedRoute === "rules" ? "font-semibold" : "font-normal"
+            )}
+          >
+            Rules
+          </Link>
+        </li>
 
         {!loading && (
-          <span
-            className={
-              selectedRoute === "sign-in" ? "font-semibold" : "font-normal"
-            }
-          >
+          <li>
             <Link
               href={user ? "/" : "/sign-in"}
-              onClick={async (event) => {
-                if (user) {
-                  event.preventDefault();
-                  signout().then(clearUser);
-                }
-              }}
+              onClick={user ? handleSignout : undefined}
+              className={clsx(
+                "transition-colors duration-200 hover:text-neutral-300",
+                selectedRoute === "sign-in" ? "font-semibold" : "font-normal"
+              )}
             >
               {user ? "Sign out" : "Sign in"}
             </Link>
-          </span>
+          </li>
         )}
-      </div>
+      </ul>
     </nav>
   );
 };
