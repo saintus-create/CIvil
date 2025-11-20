@@ -5,6 +5,7 @@ import { Avatar } from "@/components/Avatar";
 import { signout } from "@/tools/account";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import clsx from "clsx";
 
 type NavbarLoggedInProps = {
   user: Models.User<Models.Preferences>;
@@ -12,25 +13,28 @@ type NavbarLoggedInProps = {
 };
 
 export const NavbarLoggedIn = ({ user, clearUser }: NavbarLoggedInProps) => {
+  const handleSignout = async () => {
+    await signout();
+    clearUser();
+    redirect("/");
+  };
+
   return (
     <nav
-      className={
-        "bg flex items-center justify-between border-b border-neutral-800 bg-neutral-850 px-4 py-2"
-      }
+      className={clsx(
+        "flex items-center justify-between px-4 py-2",
+        "border-b border-black bg-black"
+      )}
+      aria-label="Logged-in navigation"
     >
-      <Link href={"/hacker"}>
+      <Link href="/hacker" aria-label="Dashboard">
         <Logo />
       </Link>
-      <div className={"flex items-center gap-4"}>
+      <div className="flex items-center gap-4">
         <Button
-          buttonSize={"small"}
-          buttonType={"secondary"}
-          onClick={() =>
-            signout().then(() => {
-              clearUser();
-              redirect("/");
-            })
-          }
+          buttonSize="small"
+          buttonType="secondary"
+          onClick={handleSignout}
         >
           Sign out
         </Button>
