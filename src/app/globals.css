@@ -4,28 +4,29 @@
 
 @layer components {
     .title-large {
-        @apply text-6xl font-medium
+        @apply text-6xl font-medium;
     }
 }
 
 :root {
-    --color-fgcolor-neutral-primary: #2D2D31;
+    --color-fgcolor-neutral-primary: #000000;
     --neutral-50: #EDEDF0;
     --neutral-100: #E4E4E7;
     --neutral-200: #D8D8DB;
     --neutral-250: #C3C3C6;
     --neutral-300: #ADADB0;
     --neutral-500: #818186;
-    --neutral-750: #414146;
-    --neutral-800: #2D2D31;
-    --neutral-850: #1D1D21;
-    --neutral-900: #19191C;
-    --neutral-900-80: #19191CCC;
+    --neutral-750: #000000;
+    --neutral-800: #000000;
+    --neutral-850: #000000;
+    --neutral-900: #000000;
+    --neutral-900-80: #000000CC; /* jet black with 80% opacity */
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-
+        --color-fgcolor-neutral-primary: #000000;
+        --neutral-900: #000000;
     }
 }
 
